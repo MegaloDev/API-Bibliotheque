@@ -1,14 +1,25 @@
+
 const express = require('express');
 const cors = require('cors');
+
 const app = express();
 
-//middleware
+// Middlewares
 app.use(express.json());
 app.use(cors());
 
-//routes
+// Routes
+const authRoutes = require('./routes/authRoutes');
+
 app.get('/', (req, res) => {
-    res.status(200).json({ success: true, message: 'Welcome to the API' });
+    res.status(200).json({
+        success: true,
+        data: null,
+        message: 'Welcome to the API'
+    });
 });
 
+app.use('/api/auth', authRoutes);
+
+// Exportation de l'application
 module.exports = app;
