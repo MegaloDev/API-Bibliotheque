@@ -1,0 +1,678 @@
+{
+	"info": {
+		"_postman_id": "3e5c6903-f22b-476d-abe6-15fb8c442b47",
+		"name": "API Bibliothèque",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "55859364",
+		"_collection_link": "https://rasamizafy-sit-1861055.postman.co/workspace/Simeon's-Workspace~69fea247-b09c-402f-8a33-4caefe6f55c8/collection/55859364-3e5c6903-f22b-476d-abe6-15fb8c442b47?action=share&source=collection_link&creator=55859364"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Connexion réussie\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Le token JWT est présent\", function () {",
+									"    pm.expect(response.data.token).to.be.a(\"string\");",
+									"});",
+									"",
+									"if (response.success && response.data.token) {",
+									"    pm.environment.set(\"token\", response.data.token);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin123!\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "Get All Authors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/authors",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Author",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"Albert\",\n  \"last_name\": \"Camus\",\n  \"nationality\": \"Française\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/authors",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Author By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"L'auteur a été modifié\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data.nationality).to.eql(\"Algérienne\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"Albert\",\n  \"last_name\": \"Camus\",\n  \"nationality\": \"Algérienne\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/authors/{{author_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{author_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"L'auteur a été modifié\", function () {",
+									"    const data = pm.response.json();",
+									"",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data.first_name).to.eql(\"Albert\");",
+									"    pm.expect(data.data.last_name).to.eql(\"Camus\");",
+									"    pm.expect(data.data.nationality).to.eql(\"Algérienne\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Albert\",\n    \"last_name\": \"Camus\",\n    \"nationality\": \"Algérienne\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/authors/{{author_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{author_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"L'auteur a été supprimé\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data.success).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/authors/{{author_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"{{author_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Get All Books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"La réponse contient une liste de livres\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 201 - Livre créé\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const data = pm.response.json();",
+									"",
+									"pm.test(\"Le livre a été créé avec succès\", function () {",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data.title).to.eql(\"L'Étranger\");",
+									"});",
+									"",
+									"if (pm.response.code === 201) {",
+									"    pm.environment.set(\"book_id\", data.data._id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"L'Étranger\",\n    \"isbn\": \"9782070360024\",\n    \"year\": 1942,\n    \"available\": true,\n    \"author_id\": \"6afe7d163f878669c658b490\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/books",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Book By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Le livre demandé est retourné\", function () {",
+									"    const data = pm.response.json();",
+									"",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data._id).to.eql(",
+									"        pm.environment.get(\"book_id\")",
+									"    );",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Le livre a été modifié\", function () {",
+									"    const data = pm.response.json();",
+									"",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data.title).to.eql(\"L'Étranger - Édition révisée\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"L'Étranger - Édition révisée\",\n    \"isbn\": \"9782070360024\",\n    \"year\": 1942,\n    \"available\": true,\n    \"author_id\": \"6afe7d163f878669c658b490\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Le livre a été supprimé\", function () {",
+									"    const data = pm.response.json();",
+									"    pm.expect(data.success).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/books/{{book_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"{{book_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Borrows",
+			"item": [
+				{
+					"name": "Get All Borrows",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"La réponse contient une liste d'emprunts\", function () {",
+									"    const data = pm.response.json();",
+									"",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/borrows",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"borrows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Borrow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 201 - Emprunt créé\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const data = pm.response.json();",
+									"",
+									"pm.test(\"L'emprunt a été créé avec succès\", function () {",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data.user_name).to.eql(\"Rakoto\");",
+									"});",
+									"",
+									"if (pm.response.code === 201) {",
+									"    pm.environment.set(\"borrow_id\", data.data._id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_name\": \"Rakoto\",\n    \"book_id\": \"6afe7fa8a834b1d92d135be0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/borrows",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"borrows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Return Borrow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statut HTTP 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"L'emprunt a été retourné\", function () {",
+									"    const data = pm.response.json();",
+									"",
+									"    pm.expect(data.success).to.eql(true);",
+									"    pm.expect(data.data.returned_at).to.not.be.null;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/borrows/{{borrow_id}}/return",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"borrows",
+								"{{borrow_id}}",
+								"return"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

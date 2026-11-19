@@ -7,6 +7,15 @@ const borrowRoutes = require('./routes/borrowRoutes');
 
 const app = express();
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yaml');
+const fs = require('fs');
+const path = require('path');
+
+const swaggerDocument = YAML.parse(
+    fs.readFileSync(path.join(__dirname, '../docs/openapi.yaml'), 'utf8')
+);
+
 // Middlewares
 app.use(express.json());
 app.use(cors());
@@ -26,6 +35,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/authors', authorRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/borrows', borrowRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Exportation de l'application
 module.exports = app;
