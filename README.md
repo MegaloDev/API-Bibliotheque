@@ -30,7 +30,7 @@ Avant d'installer le projet, il faut disposer de :
 Cloner le dépôt :
 
 ```bash
-git clone URL_DU_DEPOT
+git clone https://github.com/MegaloDev/API-Bibliotheque/commit/afc27d03f053f672998abb03af906e041f42a0c8
 ```
 
 Accéder au projet :
