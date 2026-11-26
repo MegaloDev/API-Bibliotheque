@@ -12,6 +12,8 @@ const YAML = require('yaml');
 const fs = require('fs');
 const path = require('path');
 
+const v1BookRoutes = require('./routes/v1BookRoutes');
+
 const swaggerDocument = YAML.parse(
     fs.readFileSync(path.join(__dirname, '../docs/openapi.yaml'), 'utf8')
 );
