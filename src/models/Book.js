@@ -31,7 +31,23 @@ const bookSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Author',
             required: true
+        },
+
+        summary: {
+            type: String,
+            default: null
+        },
+
+        generated_by: {
+            type: String,
+            default: null
+        },
+
+        generated_at: {
+            type: Date,
+            default: null
         }
+        
     },
     {
         timestamps: true
